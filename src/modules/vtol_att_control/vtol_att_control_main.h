@@ -74,7 +74,7 @@
 
 #include <uORB/topics/actuator_armed.h>
 #include <uORB/topics/actuator_controls.h>
-#include <uORB/topics/airspeed.h>
+#include <uORB/topics/control_state.h>
 #include <uORB/topics/battery_status.h>
 #include <uORB/topics/control_state.h>
 #include <uORB/topics/fw_virtual_attitude_setpoint.h>
@@ -129,11 +129,10 @@ public:
 	struct actuator_controls_s 			*get_actuators_fw_in() {return &_actuators_fw_in;}
 	struct actuator_armed_s 			*get_armed() {return &_armed;}
 	struct vehicle_local_position_s 		*get_local_pos() {return &_local_pos;}
-	struct airspeed_s 				*get_airspeed() {return &_airspeed;}
 	struct battery_status_s 			*get_batt_status() {return &_batt_status;}
 	struct tecs_status_s 				*get_tecs_status() {return &_tecs_status;}
 	struct vehicle_land_detected_s			*get_land_detected() {return &_land_detected;}
-
+        struct control_state_s                          *get_control_state() {return &_control_state;}
 	struct Params 					*get_params() {return &_params;}
 
 
@@ -155,11 +154,11 @@ private:
 	int	_manual_control_sp_sub;	//manual control setpoint subscription
 	int	_armed_sub;				//arming status subscription
 	int	_local_pos_sub;			// sensor subscription
-	int	_airspeed_sub;			// airspeed subscription
 	int	_battery_status_sub;	// battery status subscription
 	int	_vehicle_cmd_sub;
 	int	_tecs_status_sub;
 	int	_land_detected_sub;
+	int     _control_state_sub;
 
 	int 	_actuator_inputs_mc;	//topic on which the mc_att_controller publishes actuator inputs
 	int 	_actuator_inputs_fw;	//topic on which the fw_att_controller publishes actuator inputs
@@ -188,11 +187,11 @@ private:
 	struct actuator_controls_s			_actuators_fw_in;	//actuator controls from fw_att_control
 	struct actuator_armed_s				_armed;				//actuator arming status
 	struct vehicle_local_position_s			_local_pos;
-	struct airspeed_s 				_airspeed;			// airspeed
 	struct battery_status_s 			_batt_status; 		// battery status
 	struct vehicle_command_s			_vehicle_cmd;
 	struct tecs_status_s				_tecs_status;
 	struct vehicle_land_detected_s			_land_detected;
+	struct control_state_s                          _control_state;         //Control State
 
 	Params _params;	// struct holding the parameters
 
@@ -239,7 +238,6 @@ private:
 	void 		vehicle_rates_sp_mc_poll();
 	void 		vehicle_rates_sp_fw_poll();
 	void 		vehicle_local_pos_poll();		// Check for changes in sensor values
-	void 		vehicle_airspeed_poll();		// Check for changes in airspeed
 	void		vehicle_attitude_setpoint_poll();  //Check for attitude setpoint updates.
 	void		vehicle_attitude_poll();  //Check for attitude updates.
 	void 		vehicle_battery_poll();			// Check for battery updates
@@ -252,6 +250,7 @@ private:
 	void 		fill_fw_att_rates_sp();
 	void		handle_command();
 	void 		publish_att_sp();
+	void            control_state_poll();
 };
 
 #endif
