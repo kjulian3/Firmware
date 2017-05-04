@@ -166,7 +166,7 @@ protected:
 	struct actuator_controls_s			*_actuators_fw_in;			//actuator controls from fw_att_control
 	struct actuator_armed_s				*_armed;					//actuator arming status
 	struct vehicle_local_position_s			*_local_pos;
-	struct airspeed_s 				*_airspeed;					// airspeed
+	struct control_state_s 				*_ctrl_state;					// airspeed
 	struct battery_status_s 			*_batt_status; 				// battery status
 	struct tecs_status_s				*_tecs_status;
 	struct vehicle_land_detected_s			*_land_detected;
