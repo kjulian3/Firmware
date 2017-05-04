@@ -197,7 +197,7 @@ void Standard::update_vtol_state()
 		} else if (_vtol_schedule.flight_mode == TRANSITION_TO_FW) {
 			// continue the transition to fw mode while monitoring airspeed for a final switch to fw mode
 			if (((_params_standard.airspeed_mode == control_state_s::AIRSPD_MODE_DISABLED ||
-			      _control_state->airspeed >= _params_standard.airspeed_trans) &&
+			      _ctrl_state->airspeed >= _params_standard.airspeed_trans) &&
 			     (float)hrt_elapsed_time(&_vtol_schedule.transition_start)
 			     > (_params_standard.front_trans_time_min * 1000000.0f)) ||
 			    can_transition_on_ground()) {
@@ -252,10 +252,10 @@ void Standard::update_transition_state()
 
 		// do blending of mc and fw controls if a blending airspeed has been provided and the minimum transition time has passed
 		if (_airspeed_trans_blend_margin > 0.0f &&
-		    _control_state->airspeed >= _params_standard.airspeed_blend &&
+		    _ctrl_state->airspeed >= _params_standard.airspeed_blend &&
 		    (float)hrt_elapsed_time(&_vtol_schedule.transition_start) > (_params_standard.front_trans_time_min * 1000000.0f)
 		   ) {
-			float weight = 1.0f - fabsf(_control_state->airspeed - _params_standard.airspeed_blend) /
+			float weight = 1.0f - fabsf(_ctrl_state->airspeed - _params_standard.airspeed_blend) /
 				       _airspeed_trans_blend_margin;
 			_mc_roll_weight = weight;
 			_mc_pitch_weight = weight;
