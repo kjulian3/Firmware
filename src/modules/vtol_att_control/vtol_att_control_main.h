@@ -76,7 +76,6 @@
 #include <uORB/topics/actuator_controls.h>
 #include <uORB/topics/control_state.h>
 #include <uORB/topics/battery_status.h>
-#include <uORB/topics/control_state.h>
 #include <uORB/topics/fw_virtual_attitude_setpoint.h>
 #include <uORB/topics/fw_virtual_rates_setpoint.h>
 #include <uORB/topics/manual_control_setpoint.h>
@@ -132,7 +131,7 @@ public:
 	struct battery_status_s 			*get_batt_status() {return &_batt_status;}
 	struct tecs_status_s 				*get_tecs_status() {return &_tecs_status;}
 	struct vehicle_land_detected_s			*get_land_detected() {return &_land_detected;}
-        struct control_state_s                          *get_control_state() {return &_control_state;}
+        struct control_state_s                          *get_control_state() {return &_ctrl_state;}
 	struct Params 					*get_params() {return &_params;}
 
 
@@ -191,7 +190,7 @@ private:
 	struct vehicle_command_s			_vehicle_cmd;
 	struct tecs_status_s				_tecs_status;
 	struct vehicle_land_detected_s			_land_detected;
-	struct control_state_s                          _control_state;         //Control State
+	struct control_state_s                          _ctrl_state;         //Control State
 
 	Params _params;	// struct holding the parameters
 
