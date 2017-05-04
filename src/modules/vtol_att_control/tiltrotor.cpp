@@ -220,7 +220,7 @@ void Tiltrotor::update_vtol_state()
 
 				// check if we have reached airspeed to switch to fw mode
 				transition_to_p2 |= _params_tiltrotor.airspeed_mode != control_state_s::AIRSPD_MODE_DISABLED &&
-						    _airspeed->indicated_airspeed_m_s >= _params_tiltrotor.airspeed_trans &&
+						    _ctrl_state->airspeed >= _params_tiltrotor.airspeed_trans &&
 						    (float)hrt_elapsed_time(&_vtol_schedule.transition_start) > (_params->front_trans_time_min * 1e6f);
 
 				// check if airspeed is invalid and transition by time
@@ -341,12 +341,12 @@ void Tiltrotor::update_transition_state()
 		_mc_yaw_weight = 1.0f;
 
 		// reduce MC controls once the plane has picked up speed
-		if (use_airspeed && _airspeed->indicated_airspeed_m_s > ARSP_YAW_CTRL_DISABLE) {
+		if (use_airspeed && _ctrl_state->airspeed > ARSP_YAW_CTRL_DISABLE) {
 			_mc_yaw_weight = 0.0f;
 		}
 
-		if (use_airspeed && _airspeed->indicated_airspeed_m_s >= _params_tiltrotor.airspeed_blend_start) {
-			_mc_roll_weight = 1.0f - (_airspeed->indicated_airspeed_m_s - _params_tiltrotor.airspeed_blend_start) /
+		if (use_airspeed && _ctrl_state->airspeed >= _params_tiltrotor.airspeed_blend_start) {
+			_mc_roll_weight = 1.0f - (_ctrl_state->airspeed - _params_tiltrotor.airspeed_blend_start) /
 					  (_params_tiltrotor.airspeed_trans - _params_tiltrotor.airspeed_blend_start);
 		}
 
