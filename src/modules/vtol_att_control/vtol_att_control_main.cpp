@@ -76,7 +76,7 @@ VtolAttitudeControl::VtolAttitudeControl() :
 	_manual_control_sp_sub(-1),
 	_armed_sub(-1),
 	_local_pos_sub(-1),
-	_airspeed_sub(-1),
+	_control_state_sub(-1),
 	_battery_status_sub(-1),
 	_vehicle_cmd_sub(-1),
 	_tecs_status_sub(-1),
@@ -109,7 +109,7 @@ VtolAttitudeControl::VtolAttitudeControl() :
 	memset(&_actuators_fw_in, 0, sizeof(_actuators_fw_in));
 	memset(&_armed, 0, sizeof(_armed));
 	memset(&_local_pos, 0, sizeof(_local_pos));
-	memset(&_airspeed, 0, sizeof(_airspeed));
+	memset(&_ctrl_state, 0, sizeof(_ctrl_state));
 	memset(&_batt_status, 0, sizeof(_batt_status));
 	memset(&_vehicle_cmd, 0, sizeof(_vehicle_cmd));
 	memset(&_tecs_status, 0, sizeof(_tecs_status));
@@ -282,16 +282,16 @@ void VtolAttitudeControl::vehicle_rates_sp_fw_poll()
 }
 
 /**
-* Check for airspeed updates.
+* Check for control_state updates.
 */
 void
-VtolAttitudeControl::vehicle_airspeed_poll()
+VtolAttitudeControl::control_state_poll()
 {
 	bool updated;
-	orb_check(_airspeed_sub, &updated);
+	orb_check(_control_state_sub, &updated);
 
 	if (updated) {
-		orb_copy(ORB_ID(airspeed), _airspeed_sub, &_airspeed);
+		orb_copy(ORB_ID(control_state), _control_state_sub, &_ctrl_state);
 	}
 }
 
@@ -650,7 +650,7 @@ void VtolAttitudeControl::task_main()
 	_manual_control_sp_sub = orb_subscribe(ORB_ID(manual_control_setpoint));
 	_armed_sub             = orb_subscribe(ORB_ID(actuator_armed));
 	_local_pos_sub         = orb_subscribe(ORB_ID(vehicle_local_position));
-	_airspeed_sub          = orb_subscribe(ORB_ID(airspeed));
+	_control_state_sub     = orb_subscribe(ORB_ID(control_state));
 	_battery_status_sub	   = orb_subscribe(ORB_ID(battery_status));
 	_vehicle_cmd_sub	   = orb_subscribe(ORB_ID(vehicle_command));
 	_tecs_status_sub = orb_subscribe(ORB_ID(tecs_status));
@@ -729,7 +729,7 @@ void VtolAttitudeControl::task_main()
 		vehicle_rates_sp_fw_poll();
 		parameters_update_poll();
 		vehicle_local_pos_poll();			// Check for new sensor values
-		vehicle_airspeed_poll();
+		control_state_poll();
 		vehicle_battery_poll();
 		vehicle_cmd_poll();
 		tecs_status_poll();
