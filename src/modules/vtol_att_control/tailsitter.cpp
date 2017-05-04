@@ -381,8 +381,7 @@ void Tailsitter::scale_mc_output()
 	calc_tot_airspeed();	// estimate air velocity seen by elevons
 
 	// if airspeed is not updating, we assume the normal average speed
-	if (bool nonfinite = !PX4_ISFINITE(_ctrl_state->airspeed) ||
-			     hrt_elapsed_time(&_airspeed->timestamp) > 1e6) {
+	if (bool nonfinite = !PX4_ISFINITE(_ctrl_state->airspeed)) {
 		airspeed = _params->mc_airspeed_trim;
 
 		if (nonfinite) {
