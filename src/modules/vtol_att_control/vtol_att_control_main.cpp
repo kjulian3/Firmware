@@ -76,11 +76,11 @@ VtolAttitudeControl::VtolAttitudeControl() :
 	_manual_control_sp_sub(-1),
 	_armed_sub(-1),
 	_local_pos_sub(-1),
-	_control_state_sub(-1),
 	_battery_status_sub(-1),
 	_vehicle_cmd_sub(-1),
 	_tecs_status_sub(-1),
 	_land_detected_sub(-1),
+	_control_state_sub(-1),
 
 	//init publication handlers
 	_actuators_0_pub(nullptr),
